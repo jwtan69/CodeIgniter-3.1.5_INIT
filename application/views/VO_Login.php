@@ -55,6 +55,9 @@
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>
                                 </div>
+                                <div id="err-block">
+
+                                </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <button class="btn btn-lg btn-success btn-block">Login</button>
                             </fieldset>
@@ -127,7 +130,21 @@ if($("#login-form").length>0) {
                     setCookie("token", json.result.token, 30);  
                     location.href="/en/vo/index";                 
                 } else {
-                    alert(json.result);
+
+                    //新增錯誤訊息
+                    var errHtml = '';
+                    errHtml += '<div id="err-Content" class="alert alert-danger">';   
+                    errHtml += json.result;
+                    errHtml += '</div>';
+
+                    $('#err-block').append(errHtml);
+
+                    //5秒后去除錯誤訊息
+                    setTimeout(function(){
+                      $('#err-Content').remove();
+                    }, 3000);
+
+                    //alert(json.result);
                 }
 
           },

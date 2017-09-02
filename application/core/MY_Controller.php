@@ -16,9 +16,9 @@ class MY_Controller extends CI_Controller {
       
       public function __construct() {
             parent::__construct();
-            $this->load->model('User_model');
             $this->load->model($this->data['model_name']);            
             $this->load->model('Function_model');
+            $this->load->model('Role_model');
             $this->load->model('User_model');
             $this->load->model('User_login_token_model');
 
@@ -30,6 +30,7 @@ class MY_Controller extends CI_Controller {
             $this->data['item_per_page'] = $this->Function_model->item_per_page();
             $this->data['webpage'] = $this->Function_model->get_web_setting();
             $this->data['islogin'] = $this->Function_model->isLogin();
+            $this->data['rolelist'] = $this->Role_model->getOptions();  
             
             
             if ($this->data['islogin']) {
@@ -66,11 +67,11 @@ class MY_Controller extends CI_Controller {
       }
       
       //For listing
-      public function index($search_column="ALL", $q="ALL", $page=1)
+      public function index($search_column="ALL", $keyword="ALL", $page=1)
       {
 
             $this->data['search_column'] = $search_column;
-            $this->data['q'] = $q;
+            $this->data['keyword'] = $keyword;
             
             $this->data['page'] = $page;
             $limit_start = ($page-1)*$this->data['item_per_page'];    
@@ -79,22 +80,28 @@ class MY_Controller extends CI_Controller {
             $sql_where['is_deleted'] = 0;            
 
             $sql_like = array();
-            if($q!="ALL") {
-              $sql_like[$search_column] = $q;
+            if($search_column!="ALL" && $keyword!="ALL") {
+              $sql_like[$search_column] = $keyword;
             }
 
-            
             $this->data["total"] = $this->{$this->data['model_name']}->record_count($sql_where, $sql_like);
             
             $results = array();
             $results = $this->{$this->data['model_name']}->fetch($this->data['item_per_page'], $limit_start, $sql_where, $sql_like);
             $this->data["results"] = $results;
             
-            $url = base_url().$this->data['init']['langu'].'/vo/'.$this->data['pathname'].'/list/'.$search_column."/".$q."/";
+            //print_r($results);exit;
+
+            $url = base_url().$this->data['init']['langu'].'/vo/'.$this->data['pathname'].'/list/'.$search_column."/".$keyword."/";
             $this->data['paging'] = $this->Function_model->get_paging($this->data['item_per_page'],10,$this->data['total'],$page,$url);
             
+            //資料開始/結束號碼
+            $this->data['data_start_no'] = ($page-1)*$this->data['item_per_page']+1;
+            $this->data['data_end_no'] = count($results)==$this->data['item_per_page']?count($results)*$page:($page-1)*$this->data['item_per_page']+count($results);
+
+
             $this->load->view('VO_Header', $this->data);
-            //$this->load->view($this->data['view_foldername']."/list", $this->data);
+            $this->load->view($this->data['view_foldername']."/list", $this->data);
             $this->load->view('VO_Footer', $this->data);
       }
       
@@ -102,9 +109,9 @@ class MY_Controller extends CI_Controller {
       {
       
           $this->data['mode'] = 'Add';
-          $this->load->view('vo/header', $this->data);
+          $this->load->view('VO_Header', $this->data);
           $this->load->view($this->data['view_foldername']."/add", $this->data);
-          $this->load->view('vo/footer', $this->data);
+          $this->load->view('VO_Footer', $this->data);
       }
       
       public function edit($id)
@@ -116,9 +123,9 @@ class MY_Controller extends CI_Controller {
             $this->data['id_column'] => $id,
           ));          
           
-          $this->load->view('vo/header', $this->data);
+          $this->load->view('VO_Header', $this->data);
           $this->load->view($this->data['view_foldername']."/add", $this->data);
-          $this->load->view('vo/footer', $this->data);
+          $this->load->view('VO_Footer', $this->data);
       }
       
       public function Submit()

@@ -17,6 +17,12 @@
     <!-- MetisMenu CSS -->
     <link href="<?=base_url('assets/vendor/metisMenu/metisMenu.min.css')?>" rel="stylesheet">
 
+    <!-- DataTables CSS -->
+    <link href="<?=base_url('assets/vendor/datatables-plugins/dataTables.bootstrap.css')?>" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="<?=base_url('assets/vendor/datatables-responsive/dataTables.responsive.css')?>" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="<?=base_url('assets/dist/css/sb-admin-2.css')?>" rel="stylesheet">
 
@@ -26,12 +32,19 @@
     <!-- Custom Fonts -->
     <link href="<?=base_url('assets/vendor/font-awesome/css/font-awesome.min.css')?>" rel="stylesheet" type="text/css">
 
+    <!-- Msg Box -->
+    <link href="<?=  base_url('assets/js/plugins/msgbox/jquery.msgbox.css')?>" rel="stylesheet">
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
 
@@ -278,6 +291,18 @@
                         </li>
                         <li>
                             <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="<?=base_url($init['langu'].'/vo/users/add')?>">Add User</a>
+                                </li>
+                                <li>
+                                    <a href="<?=base_url($init['langu'].'/vo/users/list')?>">Manage Users</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

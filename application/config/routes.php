@@ -59,7 +59,18 @@ $route['^(en|cn)/phpinfo'] = 'welcome/phpinfo';
 $route['^(en|cn)/vo'] = "VO";
 $route['^(en|cn)/vo/login'] = 'VO_Login/index';
 $route['^(en|cn)/vo/index'] = 'VO_Index/index';
-$route['^(en|cn)/vo/users'] = 'VO_Users/index';
+
+//Upload handle
+$route['^(en|cn)/vo/upload_handler'] = "VO_Upload_Handler"; 
+
+//Users
+$route['^(en|cn)/vo/users/list'] = 'VO_Users/index';
+$route['^(en|cn)/vo/users/list/(:any)/(:any)'] = "VO_Users/index/$2/$3";
+$route['^(en|cn)/vo/users/list/(:any)/(:any)/(:num)'] = "VO_Users/index/$2/$3/$4";
+$route['^(en|cn)/vo/users/add'] = "VO_Users/add"; 
+$route['^(en|cn)/vo/users/edit/(:num)'] = "VO_Users/edit/$2";
+$route['^(en|cn)/vo/users/submit'] = "VO_Users/submit"; 
+$route['^(en|cn)/vo/users/delete/(:num)'] = "VO_Users/delete/$2";
 
 //API
 $route['^(en|cn)/api/login'] = "API_Manage/login";

@@ -67,7 +67,7 @@ class User_model extends CI_Model {
            
       }
       
-      public function fetch($limit, $start, $where=array(), $where_like=array(), $order_by="created_date", $ascdesc="DESC") {
+      public function fetch($limit, $start, $where=array(), $where_like=array(), $order_by="created_date", $ascdesc="ASC") {
           
           $this->db->select("*");
 
@@ -117,11 +117,12 @@ class User_model extends CI_Model {
         $data = array(
             'is_deleted' => 1,
         );
-        $this->db->where('user_id',$id);
+        $this->db->where($id);
         $this->db->update($this->table_name, $data);
       }
 
       public function generateHash($password) {
+
         if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
           $salt = '$2y$11$' . substr(md5(uniqid(rand(), true)), 0, 22);
           return crypt($password, $salt);
@@ -134,7 +135,7 @@ class User_model extends CI_Model {
 
       //generate code for serial usage
       public function randCodeGen() {
-            return rand(10000, 99999);
+        return rand(10000, 99999);
       }
 
       //To confirm whether the code and the id is match
