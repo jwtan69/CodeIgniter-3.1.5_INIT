@@ -21,13 +21,31 @@
                                     <div class="col-sm-6">
                                         <div class="dataTables_length" id="dataTables-example_length">
                                             <label>
-                                                Search by 
+
+                                                Search by Role
+                                                <select  name="role" id="role" class="form-control input-sm">
+                                                    <option value="ALL" <?=$role==='ALL'?'':'selected'?>>ALL</option>
+                                                    <?php foreach($rolelist as $k => $v){?>
+                                                        <option value="<?=$k?>" <?=$role===(string)$k?'selected':''?>><?=$v?></option>
+                                                    <?php }?>
+                                                </select> 
+
+                                                Column
                                                 <select onchange="showKeyword()" name="search_columns" id="search_columns" class="form-control input-sm">
                                                     <?php foreach($search_columns as $k => $v){?>
                                                         <option value="<?=$k?>" <?=$search_column==$k?'selected':''?>><?=$v?></option>
                                                     <?php }?>
                                                 </select> 
                                                 <input name="keyword" id="keyword" type="search" class="form-control input-sm" placeholder="keyword" value="<?=$keyword!='ALL'?$keyword:''?>">
+                                                
+                                                Activated
+                                                <select name="activated" id="activated" class="form-control input-sm">
+                                                    <?php foreach($activated_list as $k => $v){?>
+                                                        <option value="<?=$k?>" <?=$activated===(string)$k?'selected':''?>><?=$v?></option>
+                                                    <?php }?>
+                                                </select> 
+
+
                                                 <button onclick="toSearch()" type="button" class="btn btn-primary btn-sm">
                                                     Submit
                                                 </button>
@@ -36,7 +54,9 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div id="dataTables-example_filter" class="dataTables_filter">
-                                            
+                                            <button onclick="exportPdf()" type="button" class="btn btn-primary btn-sm">
+                                                Export PDF
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -51,6 +71,7 @@
                                                     <th>Name</th>
                                                     <th>Role</th>
                                                     <th>Email</th>
+                                                    <th>Mobile</th>
                                                     <th width="1%">Activated</th>
                                                     <th >Created Date<br>Modified Date</th>
                                                     <th>Control</th>
@@ -70,6 +91,7 @@
                                                     <td><?=$v['name']?></td>
                                                     <td><?=$rolelist[$v['role_id']]?></td>
                                                     <td><?=$v['email']?></td>
+                                                    <td><?=$v['mobile']?></td>
                                                     <td><i class="fa <?=$v['activated']==1?'fa-check':'fa-times'?>"></i></td>
                                                     <td><?=$v['created_date']?><br><?=$v['modified_date']?></td>
                                                     <td>
@@ -131,14 +153,16 @@ function Delete(id){
 
 function toSearch(){
 
+    var role = $("#role").val();
     var search_columns = $("#search_columns").val();
     var keyword = $("#keyword").val();
+    var activated = $("#activated").val();
 
     if(keyword == "" || search_columns == 'ALL') {
         keyword = "ALL";
     }
 
-    location.href="<?=base_url($init['langu'].'/vo/users/list')?>"+"/"+search_columns+"/"+keyword;
+    location.href="<?=base_url($init['langu'].'/vo/users/list')?>"+"/"+role+"/"+search_columns+"/"+keyword+"/"+activated;
 
 }
 
@@ -151,6 +175,21 @@ function showKeyword(){
     }else{
         $('#keyword').show();
     }
+}
+
+function exportPdf(){
+
+    var role = $("#role").val();
+    var search_columns = $("#search_columns").val();
+    var keyword = $("#keyword").val();
+    var activated = $("#activated").val();
+    var page = '<?=$page?>';
+
+    if(keyword == "" || search_columns == 'ALL') {
+        keyword = "ALL";
+    }
+
+    window.open("<?=base_url($init['langu'].'/vo/users/list')?>"+"/"+role+"/"+search_columns+"/"+keyword+"/"+activated+"/"+page+"/1","_blank");
 }
 
 </script>
