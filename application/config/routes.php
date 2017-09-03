@@ -75,3 +75,6 @@ $route['^(en|cn)/vo/users/delete/(:num)'] = "VO_Users/delete/$2";
 //API
 $route['^(en|cn)/api/login'] = "API_Manage/login";
 $route['^(en|cn)/api/logout/(:any)'] = "API_Manage/logout/$2";
+
+
+

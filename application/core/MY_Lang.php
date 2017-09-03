@@ -12,8 +12,8 @@ class MY_Lang extends CI_Lang {
 
 	// languages
 	var $languages = array(
-		'cn'    => 'zh-cn',
 		'en' 	=> 'english',
+		'cn'    => 'zh-cn',
         'zh'    => 'zh-tw',		
 	);
 

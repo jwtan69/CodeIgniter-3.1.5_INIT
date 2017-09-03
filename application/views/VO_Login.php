@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        <input name="remember" id="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>
                                 </div>
                                 <div id="err-block">
@@ -127,7 +127,15 @@ if($("#login-form").length>0) {
           data: JSON.stringify(obj),
           success: function(json){
                 if(json.status == "OK") {
-                    setCookie("token", json.result.token, 30);  
+
+                    //cookie expired in 30day
+                    var cookieLife = 30;
+                    //if remember checked
+                    if($('#remember').prop( "checked" )){
+                        cookieLife = 90;
+                    }
+
+                    setCookie("token", json.result.token, cookieLife);  
                     location.href="/en/vo/index";                 
                 } else {
 

@@ -57,6 +57,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php if(empty($results)){?>
+                                                <tr class="odd">
+                                                    <td colspan="8">No record found</td>
+                                                <tr>
+                                                <?php }?>
+
                                                 <?php foreach($results as $k => $v){?>
                                                 <tr class="odd">
                                                     <td><?=$data_start_no+$k?></td>

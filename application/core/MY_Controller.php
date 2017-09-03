@@ -96,7 +96,7 @@ class MY_Controller extends CI_Controller {
             $this->data['paging'] = $this->Function_model->get_paging($this->data['item_per_page'],10,$this->data['total'],$page,$url);
             
             //資料開始/結束號碼
-            $this->data['data_start_no'] = ($page-1)*$this->data['item_per_page']+1;
+            $this->data['data_start_no'] = count($results)!=0?($page-1)*$this->data['item_per_page']+1:0;
             $this->data['data_end_no'] = count($results)==$this->data['item_per_page']?count($results)*$page:($page-1)*$this->data['item_per_page']+count($results);
 
 
