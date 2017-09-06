@@ -67,7 +67,7 @@ $route['^(en|cn)/vo/upload_handler'] = "VO_Upload_Handler";
 $route['^(en|cn)/vo/users/list'] = 'VO_Users/index';
 $route['^(en|cn)/vo/users/list/(:any)/(:any)/(:any)/(:any)'] = "VO_Users/index/$2/$3/$4/$5";
 $route['^(en|cn)/vo/users/list/(:any)/(:any)/(:any)/(:any)/(:num)'] = "VO_Users/index/$2/$3/$4/$5/$6";
-$route['^(en|cn)/vo/users/list/(:any)/(:any)/(:any)/(:any)/(:num)/(:num)'] = "VO_Users/index/$2/$3/$4/$5/$6/$7";
+$route['^(en|cn)/vo/users/list/(:any)/(:any)/(:any)/(:any)/(:num)/(:num)/(:num)'] = "VO_Users/index/$2/$3/$4/$5/$6/$7/$8";
 $route['^(en|cn)/vo/users/add'] = "VO_Users/add"; 
 $route['^(en|cn)/vo/users/edit/(:num)'] = "VO_Users/edit/$2";
 $route['^(en|cn)/vo/users/submit'] = "VO_Users/submit"; 
@@ -79,3 +79,4 @@ $route['^(en|cn)/api/logout/(:any)'] = "API_Manage/logout/$2";
 
 
 
+$route['^(en|cn)/test'] = "Test_Manage";

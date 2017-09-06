@@ -123,14 +123,26 @@ class User_model extends CI_Model {
 
       public function generateHash($password) {
 
+        /*
         if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
           $salt = '$2y$11$' . substr(md5(uniqid(rand(), true)), 0, 22);
           return crypt($password, $salt);
         } 
+        */
+
+        $options = [
+            'cost' => 10,
+            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+        ];
+        return password_hash($password, PASSWORD_BCRYPT, $options);
+
       }
 
       public function verify($password, $hashedPassword) {
-        return crypt($password, $hashedPassword) == $hashedPassword;
+
+        //return crypt($password, $hashedPassword) == $hashedPassword;
+        return password_verify($password, $hashedPassword);
+
       }
 
       //generate code for serial usage

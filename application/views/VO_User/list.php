@@ -54,8 +54,11 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div id="dataTables-example_filter" class="dataTables_filter">
-                                            <button onclick="exportPdf()" type="button" class="btn btn-primary btn-sm">
+                                            <button onclick="exportDoc('PDF')" type="button" class="btn btn-primary btn-sm">
                                                 Export PDF
+                                            </button>
+                                            <button onclick="exportDoc('EXCEL')" type="button" class="btn btn-primary btn-sm">
+                                                Export EXcel
                                             </button>
                                         </div>
                                     </div>
@@ -131,6 +134,8 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            <?php echo $this->benchmark->elapsed_time();?>
+            <?php echo $this->benchmark->memory_usage();?>
 
 <script>  
 $(function() {
@@ -177,19 +182,27 @@ function showKeyword(){
     }
 }
 
-function exportPdf(){
+function exportDoc(type){
 
     var role = $("#role").val();
     var search_columns = $("#search_columns").val();
     var keyword = $("#keyword").val();
     var activated = $("#activated").val();
     var page = '<?=$page?>';
+    var pdf = 0;
+    var excel = 0;
 
     if(keyword == "" || search_columns == 'ALL') {
         keyword = "ALL";
     }
 
-    window.open("<?=base_url($init['langu'].'/vo/users/list')?>"+"/"+role+"/"+search_columns+"/"+keyword+"/"+activated+"/"+page+"/1","_blank");
+    if(type == 'PDF'){
+        pdf = 1;
+    }else if(type == 'EXCEL'){
+        excel = 1;
+    }
+
+    window.open("<?=base_url($init['langu'].'/vo/users/list')?>"+"/"+role+"/"+search_columns+"/"+keyword+"/"+activated+"/"+page+"/"+pdf+"/"+excel,"_blank");
 }
 
 </script>

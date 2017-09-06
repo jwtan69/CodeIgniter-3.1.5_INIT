@@ -34,7 +34,8 @@ class VO_Users extends MY_Controller {
 	);
 
     //For listing
-    public function index($role="ALL",$search_column="ALL", $keyword="ALL",$activated="ALL", $page=1,$pdf=0){
+    public function index($role="ALL",$search_column="ALL", $keyword="ALL",$activated="ALL", $page=1,$pdf=0,$excel=0){
+
 
             //activated list
             $this->data['activated_list']  = array(
@@ -82,16 +83,21 @@ class VO_Users extends MY_Controller {
                 exit;
             }
 
+            //generate pdf
+            if($excel != 0){
+                $this->exportExcel($results);
+                exit;
+            }
+
             //echo $this->db->last_query();exit;
             //print_r($results);exit;
 
-            $url = base_url().$this->data['init']['langu'].'/vo/'.$this->data['pathname'].'/list/'.$search_column."/".$keyword."/";
+            $url = base_url().$this->data['init']['langu'].'/vo/'.$this->data['pathname'].'/list/'.$role.'/'.$search_column.'/'.$keyword.'/'.$activated.'/';
             $this->data['paging'] = $this->Function_model->get_paging($this->data['item_per_page'],10,$this->data['total'],$page,$url);
             
             //資料開始/結束號碼
             $this->data['data_start_no'] = count($results)!=0?($page-1)*$this->data['item_per_page']+1:0;
             $this->data['data_end_no'] = count($results)==$this->data['item_per_page']?count($results)*$page:($page-1)*$this->data['item_per_page']+count($results);
-
 
             $this->load->view('VO_Header', $this->data);
             $this->load->view($this->data['view_foldername']."/list", $this->data);
@@ -199,7 +205,65 @@ class VO_Users extends MY_Controller {
         $pdf->Output($output_file, 'I'); 
         //$pdf->Output("./uploads/".$output_file, 'F'); 
 
-        print_r($data);exit;
+        
+
+    }
+
+    private function exportExcel($data){
+
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+
+        //activate worksheet number 1
+        $objPHPExcel->setActiveSheetIndex(0);
+        //name the worksheet
+        $objPHPExcel->getActiveSheet()->setTitle('Users List');
+        //set cell A1 content with some text
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'Users List');
+
+        $row = 2;
+
+
+        if(!empty($data)){
+
+            $excelKey = $data[0];
+            $excelKey = array_keys($excelKey);
+
+            $charHead = 'A';
+            foreach($excelKey as $k => $v){
+                $objPHPExcel->getActiveSheet()->setCellValue($charHead.$row, $v);
+                $charHead++;
+            }
+            $row++;
+
+            foreach($data as $k => $v){
+
+                $charBody = 'A';
+                foreach($excelKey as $k2 => $v2){
+                    $objPHPExcel->getActiveSheet()->setCellValue($charBody.$row, $v[$v2]);
+                    $charBody++;
+                }
+                $row++;
+            }
+
+        }else{
+            $objPHPExcel->getActiveSheet()->setCellValue('A'.$row, "No data in this search criteria");
+            $row++;
+        }
+
+
+        $filename='Users_list'.date("YmdHis").'.xls'; //save our workbook as this file name
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');   
+        
+        exit;
 
     }
 
