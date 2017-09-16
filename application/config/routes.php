@@ -80,3 +80,4 @@ $route['^(en|cn)/api/logout/(:any)'] = "API_Manage/logout/$2";
 
 
 $route['^(en|cn)/test'] = "Test_Manage";
+$route['^(en|cn)/editor'] = "Test_Manage/editor";

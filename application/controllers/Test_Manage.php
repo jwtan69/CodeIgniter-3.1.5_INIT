@@ -29,6 +29,21 @@ class Test_Manage extends CI_Controller {
 
     }
 
+    public function editor(){
+
+        $this->load->library('ckeditor');
+        $this->load->library('ckfinder');
+        $this->ckeditor = new CKEditor();
+        $this->ckeditor->basePath = base_url().'assets/ckeditor/';
+        $this->ckeditor->config['toolbar'] = 'Full';
+        $this->ckeditor->config['height'] = '300px';
+        CKFinder::SetupCKEditor($this->ckeditor, base_url().'assets/ckfinder/');  
+
+        echo '<textarea id="textarea" name="textarea"></textarea>';
+        echo $this->ckeditor->replace("textarea");
+
+    }
+
 }
 
 ?>
